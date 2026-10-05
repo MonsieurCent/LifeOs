@@ -1,0 +1,6 @@
+{
+  "name": "Community Pulse",
+  "description": "LifeOS - Comprehensive fitness dashboard, AI health coach, weekly progressive overload matrix planner, Google Health and Fitbit sync, body composition tracking, and nutrition optimization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

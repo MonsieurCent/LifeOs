@@ -1,0 +1,51 @@
+{
+  "entities": {
+    "UserProfile": {
+      "name": "string",
+      "email": "string",
+      "updatedAt": "string"
+    },
+    "SavedSession": {
+      "id": "string",
+      "userId": "string",
+      "title": "string",
+      "date": "string",
+      "savedAt": "string",
+      "deviceId": "string",
+      "deviceName": "string",
+      "exercises": "array",
+      "durationMinutes": "number",
+      "sessionRpe": "number",
+      "notes": "string"
+    },
+    "FitnessData": {
+      "workouts": "array",
+      "matrixPlans": "array",
+      "bodyCompRecords": "array",
+      "userProfile": "map",
+      "healthMetrics": "map",
+      "supplements": "array",
+      "progressPhotos": "array",
+      "sessionFeelings": "array",
+      "programs": "array",
+      "activeProgramId": "string",
+      "completedDaysRecord": "map",
+      "customExercises": "array",
+      "updatedAt": "string"
+    }
+  },
+  "firestore": {
+    "/users/{userId}/saved_sessions/{sessionId}": {
+      "schema": "SavedSession",
+      "description": "Durable individual workout records with timestamp and device tracking"
+    },
+    "/users/{userId}/workouts/{workoutId}": {
+      "schema": "SavedSession",
+      "description": "Per-workout individual documents"
+    },
+    "/users/{userId}/data/fitnessStore": {
+      "schema": "FitnessData",
+      "description": "Aggregated user fitness data store"
+    }
+  }
+}

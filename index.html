@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        function isIgnoredError(err) {
+          if (!err) return false;
+          var str = '';
+          try {
+            if (typeof err === 'string') {
+              str = err;
+            } else if (err.message && typeof err.message === 'string') {
+              str = err.message;
+            } else if (err.reason) {
+              str = typeof err.reason === 'string' ? err.reason : (err.reason.message || String(err.reason));
+            } else {
+              str = String(err);
+            }
+          } catch (e) {
+            return false;
+          }
+          str = str.toLowerCase();
+          return str.indexOf('metamask') !== -1 ||
+                 str.indexOf('ethereum') !== -1 ||
+                 str.indexOf('web3') !== -1 ||
+                 str.indexOf('evm') !== -1 ||
+                 str.indexOf('websocket closed without opened') !== -1 ||
+                 str.indexOf('failed to connect to websocket') !== -1 ||
+                 str.indexOf('websocket closed') !== -1 ||
+                 str.indexOf('closed without opened') !== -1 ||
+                 str.indexOf('[vite]') !== -1;
+        }
+
+        window.addEventListener('unhandledrejection', function(event) {
+          if (isIgnoredError(event.reason)) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+          }
+        }, true);
+
+        window.addEventListener('error', function(event) {
+          if (isIgnoredError(event.message) || isIgnoredError(event.error)) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+
+        var origOnError = window.onerror;
+        window.onerror = function(msg, source, lineno, colno, error) {
+          if (isIgnoredError(msg) || isIgnoredError(error)) {
+            return true;
+          }
+          if (origOnError) return origOnError.apply(this, arguments);
+        };
+
+        var origConsoleError = console.error;
+        console.error = function() {
+          for (var i = 0; i < arguments.length; i++) {
+            if (isIgnoredError(arguments[i])) {
+              return;
+            }
+          }
+          origConsoleError.apply(console, arguments);
+        };
+      })();
+    </script>
+    <title>Community Pulse</title>
+    <meta name="description" content="LifeOS - Comprehensive fitness dashboard, AI health coach, weekly progressive overload matrix planner, Google Health and Fitbit sync, body composition tracking, and nutrition optimization." />
+    <meta property="og:title" content="Community Pulse" />
+    <meta property="og:description" content="LifeOS - Comprehensive fitness dashboard, AI health coach, weekly progressive overload matrix planner, Google Health and Fitbit sync, body composition tracking, and nutrition optimization." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-[#ECECEB] text-[#222222] min-h-screen antialiased selection:bg-[#AD314D]/20 selection:text-[#AD314D]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
